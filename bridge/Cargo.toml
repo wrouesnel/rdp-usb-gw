@@ -1,0 +1,22 @@
+[package]
+name = "usbgw-bridge"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+license = "MIT OR Apache-2.0"
+description = "Exposes USB devices redirected over RDP (URBDRC) through vhci_hcd"
+
+[dependencies]
+ironrdp-connector = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce" }
+ironrdp-core = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce", features = ["alloc"] }
+ironrdp-dvc = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce" }
+ironrdp-error = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce", features = ["std"] }
+ironrdp-pdu = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce", features = ["alloc"] }
+ironrdp-rdpeusb = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce", features = ["std"] }
+ironrdp-usb = { git = "https://github.com/Devolutions/IronRDP", rev = "da016ce" }
+tokio = { version = "1", features = ["io-util", "macros", "net", "rt-multi-thread", "signal", "sync", "time"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+lto = "thin"
