@@ -3,12 +3,7 @@ target/
 build/
 dist/
 *.rpm
-# VM images and test artefacts
-*.qcow2
-*.iso
-*.img
 # Secrets and local overrides
 *.env
 *.pem
 *.key
-gateway/rdpgw.local.yaml
