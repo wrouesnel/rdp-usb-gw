@@ -1,4 +1,0 @@
-# Hand redirected USB devices to the desktop's user. The headless session has no
-# seat, so systemd's uaccess gives seat-tagged devices to GDM's greeter instead.
-# Matching vhci_hcd limits this to devices that arrived through the redirector.
-SUBSYSTEM=="hidraw", KERNELS=="vhci_hcd.*", GROUP="usbgw", MODE="0660", TAG-="uaccess"

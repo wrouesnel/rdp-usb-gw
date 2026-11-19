@@ -1,5 +1,5 @@
-//! Frames exchanged with the proxy in gnome-remote-desktop. See the comment at
-//! the top of `grd-rdp-dvc-urbdrc.c` for the other half of this format.
+//! Frames exchanged with the RDP server's channel proxy. `docs/protocol.md`
+//! describes the format.
 
 use tokio::io::{AsyncRead, AsyncReadExt as _};
 

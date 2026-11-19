@@ -1812,6 +1812,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "rdp-usb-gw"
+version = "0.2.0"
+dependencies = [
+ "ironrdp-connector",
+ "ironrdp-core",
+ "ironrdp-dvc",
+ "ironrdp-error",
+ "ironrdp-pdu",
+ "ironrdp-rdpeusb",
+ "ironrdp-usb",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "regex-automata"
 version = "0.4.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2487,22 +2503,6 @@ dependencies = [
  "idna",
  "percent-encoding",
  "serde",
-]
-
-[[package]]
-name = "usbgw-bridge"
-version = "0.1.0"
-dependencies = [
- "ironrdp-connector",
- "ironrdp-core",
- "ironrdp-dvc",
- "ironrdp-error",
- "ironrdp-pdu",
- "ironrdp-rdpeusb",
- "ironrdp-usb",
- "tokio",
- "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]

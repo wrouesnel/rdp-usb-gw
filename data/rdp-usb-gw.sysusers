@@ -1,0 +1,3 @@
+# The RDP servers' users join this group to reach the channel socket and the
+# redirected devices.
+g rdp-usb-gw -

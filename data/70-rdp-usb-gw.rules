@@ -1,0 +1,4 @@
+# Hand USB devices redirected over RDP to the rdp-usb-gw group. A headless session
+# has no seat, so systemd's uaccess would give seat-tagged devices to the greeter
+# instead. Matching vhci_hcd limits this to devices that arrived through USB/IP.
+SUBSYSTEM=="hidraw", KERNELS=="vhci_hcd.*", GROUP="rdp-usb-gw", MODE="0660", TAG-="uaccess"

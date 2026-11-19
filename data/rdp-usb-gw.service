@@ -1,0 +1,18 @@
+[Unit]
+Description=USB redirection gateway for RDP sessions
+Documentation=https://github.com/wrouesnel/rdp-usb-gw
+# Up before any headless GNOME session, so its RDP server finds the socket.
+Before=gnome-headless-session@.service
+
+[Service]
+ExecStartPre=/usr/sbin/modprobe vhci-hcd
+ExecStart=/usr/bin/rdp-usb-gw
+# Root writes vhci_hcd's sysfs attach file. Members of the group, the RDP servers,
+# can open the channel socket; nobody else can.
+Group=rdp-usb-gw
+RuntimeDirectory=rdp-usb-gw
+RuntimeDirectoryMode=0750
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

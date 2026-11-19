@@ -1,10 +1,11 @@
 //! Connects the URBDRC channels of an RDP session to `vhci_hcd`, so that a USB
 //! device on the RDP client appears on this machine as a local device.
 //!
-//! gnome-remote-desktop proxies the dynamic channels over a unix socket and knows
-//! nothing about USB. Each connection to that socket is one RDP session.
+//! The RDP server proxies the dynamic channels over a unix socket and knows nothing
+//! about USB. Each connection to that socket is one RDP session. `docs/protocol.md`
+//! describes the socket.
 
-// The vendored modules are a general API, of which the bridge uses a part.
+// The vendored modules are a general API, of which the daemon uses a part.
 #[allow(dead_code)]
 #[path = "vendor/error.rs"]
 mod error;
@@ -29,7 +30,7 @@ pub enum ServerEvent {
     Usb(urbdrc::UrbdrcServerMessage),
 }
 
-const DEFAULT_SOCKET: &str = "/run/usbgw/bridge.sock";
+const DEFAULT_SOCKET: &str = "/run/rdp-usb-gw/channel.sock";
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
