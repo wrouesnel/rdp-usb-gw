@@ -29,13 +29,33 @@ work needed to support another RDP server.
   - `rdp-usb-gw.sysusers` creates the group, and `rdp-usb-gw.modules-load` loads
     `vhci_hcd` at boot.
 
+## Packages
+
+Ubuntu 24.04 and 26.04 packages are in the
+[grd-with-usb-redirect PPA](https://launchpad.net/~w-rouesnel/+archive/ubuntu/grd-with-usb-redirect),
+and EL10 packages in the
+[grd-with-usb-redirect COPR](https://copr.fedorainfracloud.org/coprs/wrouesnel/grd-with-usb-redirect/),
+along with a gnome-remote-desktop that has the proxy:
+
+```sh
+sudo add-apt-repository ppa:w-rouesnel/grd-with-usb-redirect && sudo apt install rdp-usb-gw
+sudo dnf copr enable wrouesnel/grd-with-usb-redirect && sudo dnf install rdp-usb-gw
+```
+
+The packages enable and start the service, create the group, and load `vhci_hcd` at boot.
+Then add the RDP server's user to the `rdp-usb-gw` group.
+
+`debian/` and `packaging/rdp-usb-gw.spec` are the packaging. `packaging/build-deb.sh` and
+`packaging/build-srpm.sh` build source packages, with the crates vendored, in containers
+of each distribution.
+
 ## Building
 
 It needs Rust 1.94 or later, for IronRDP. `CARGO_CACHE=<dir> ./build.sh` builds a release
 binary in a Debian bookworm container. Its glibc is old enough for EL10 and Ubuntu 24.04.
 `./build.sh test` runs the tests.
 
-## Installing
+## Installing by hand
 
 - Install `target/release/rdp-usb-gw` as `/usr/bin/rdp-usb-gw`.
 - Install the files in `data/`:
