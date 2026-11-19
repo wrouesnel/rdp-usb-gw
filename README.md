@@ -22,8 +22,8 @@ work needed to support another RDP server.
 
 - `src/`: the daemon. `src/vendor/` holds two unmodified files from IronRDP.
 - `data/`:
-  - `rdp-usb-gw.service`: runs the daemon as root, with the socket owned by the
-    `rdp-usb-gw` group.
+  - `rdp-usb-gw.service`: runs the daemon as root. Only RDP servers in the
+    `rdp-usb-gw` group may use the socket, unless `RDP_USB_GW_GROUPS` says otherwise.
   - `70-rdp-usb-gw.rules`: gives redirected HID devices to that group. A headless
     session has no seat, so `uaccess` would hand them to the greeter instead.
   - `rdp-usb-gw.sysusers` creates the group, and `rdp-usb-gw.modules-load` loads
@@ -44,6 +44,21 @@ sudo dnf copr enable wrouesnel/grd-with-usb-redirect && sudo dnf install rdp-usb
 
 The packages enable and start the service, create the group, and load `vhci_hcd` at boot.
 Then add the RDP server's user to the `rdp-usb-gw` group.
+
+### The login screen
+
+With GNOME remote login, the login screen's RDP server runs as a user that GDM creates
+on demand, in the group `gdm`. To redirect devices to the login screen, so that a
+security key or fingerprint reader can be used to log in, allow that group too:
+
+```sh
+sudo systemctl edit rdp-usb-gw   # add the two lines below
+[Service]
+Environment=RDP_USB_GW_GROUPS="rdp-usb-gw gdm"
+```
+
+That lets a client that has only passed the system-wide RDP credentials, and isn't yet
+logged in as anyone, attach USB devices. It's off by default for that reason.
 
 `debian/` and `packaging/rdp-usb-gw.spec` are the packaging. `packaging/build-deb.sh` and
 `packaging/build-srpm.sh` build source packages, with the crates vendored, in containers
@@ -78,8 +93,10 @@ RHEL builds it but doesn't ship it. On EL10, ELRepo's
 ## Security
 
 The daemon runs as root, because attaching a device means writing `vhci_hcd`'s sysfs
-attach file. It parses only what arrives on its socket, which only the `rdp-usb-gw`
-group can open. Every redirected device is one the RDP client chose to forward, and it
+attach file. It parses only what arrives on its socket. Anyone can connect to the
+socket, but the daemon closes any connection whose process isn't root or in an allowed
+group (`rdp-usb-gw` by default, `RDP_USB_GW_GROUPS` to change it), before reading from
+it. Every redirected device is one the RDP client chose to forward, and it
 gets the same trust as a device plugged into the machine.
 
 ## License

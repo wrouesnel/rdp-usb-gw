@@ -3,7 +3,7 @@
 %global debug_package %{nil}
 
 Name:           rdp-usb-gw
-Version:        0.2.0
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        USB redirection for Linux RDP servers
 License:        MIT OR Apache-2.0
@@ -77,5 +77,8 @@ udevadm control --reload-rules >/dev/null 2>&1 || :
 %{_sysusersdir}/rdp-usb-gw.conf
 
 %changelog
+* Fri Nov 20 2026 Will Rouesnel <wrouesnel@wrouesnel.com> - 0.3.0-1
+- Check each connection's groups; RDP_USB_GW_GROUPS can allow the login screen.
+
 * Thu Nov 19 2026 Will Rouesnel <wrouesnel@wrouesnel.com> - 0.2.0-1
 - First package.

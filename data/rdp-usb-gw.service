@@ -7,11 +7,15 @@ Before=gnome-headless-session@.service
 [Service]
 ExecStartPre=/usr/sbin/modprobe vhci-hcd
 ExecStart=/usr/bin/rdp-usb-gw
-# Root writes vhci_hcd's sysfs attach file. Members of the group, the RDP servers,
-# can open the channel socket; nobody else can.
+# Root writes vhci_hcd's sysfs attach file. Anyone can reach the channel socket,
+# and rdp-usb-gw checks each connection's groups: by default only members of
+# rdp-usb-gw, the RDP servers of user sessions. To also serve the login screen
+# with GNOME remote login, run "systemctl edit rdp-usb-gw" and add
+#   [Service]
+#   Environment=RDP_USB_GW_GROUPS="rdp-usb-gw gdm"
 Group=rdp-usb-gw
 RuntimeDirectory=rdp-usb-gw
-RuntimeDirectoryMode=0750
+RuntimeDirectoryMode=0755
 Restart=on-failure
 
 [Install]

@@ -9,8 +9,9 @@ for writing that proxy, so any RDP server can offer USB redirection.
 ## Connecting
 
 - rdp-usb-gw listens on `/run/rdp-usb-gw/channel.sock`, or the path given as its first
-  argument. The socket is mode 0660, in a directory of mode 0750, both owned by the group
-  `rdp-usb-gw`. The RDP server's user must be in that group.
+  argument. Anyone can connect, but rdp-usb-gw closes the connection at once unless the
+  RDP server's process is root or in an allowed group: `rdp-usb-gw`, or the groups in
+  `RDP_USB_GW_GROUPS`.
 - The RDP server connects once per RDP session, when the session's dynamic channels are
   usable (after DRDYNVC is up). One connection is one session.
 - If the socket isn't there, the server should carry on without USB redirection.
@@ -68,9 +69,10 @@ within the session, and it isn't the DVC channel id on the wire.
 
 ## Proxies
 
-- **gnome-remote-desktop:** a patch, in
-  [grd-with-usb-redirect](https://github.com/wrouesnel/grd-with-usb-redirect). The
-  `RDP_USB_GW_SOCKET` environment variable overrides the socket path.
+- **gnome-remote-desktop:** patches, packaged in
+  [grd-with-usb-redirect](https://github.com/wrouesnel/grd-with-usb-redirect), that
+  add a `usb-redirection-socket` setting (`grdctl rdp set-usb-redirection-socket`).
+  The packaged builds default it to rdp-usb-gw's socket, including for remote login.
 - **Other servers:** a FreeRDP-based server, such as KRdp or Weston's RDP backend, needs
   the same few hundred lines in-process. xrdp lets other programs open dynamic channels
   (`xrdpapi`), so an external proxy may be possible there without patching xrdp. That's

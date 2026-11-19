@@ -13,6 +13,7 @@ mod error;
 #[path = "vendor/urbdrc.rs"]
 mod urbdrc;
 
+mod access;
 mod device;
 mod proxy;
 mod session;
@@ -47,12 +48,17 @@ async fn main() -> std::io::Result<()> {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
         Err(e) => return Err(e),
     }
+    let access = access::Access::from_env();
     let listener = UnixListener::bind(&path)?;
-    std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o660))?;
+    // Each connection's groups are checked in `access`, so the socket can be open.
+    std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o666))?;
     tracing::info!(path = %path.display(), "Listening");
 
     loop {
         let (stream, _) = listener.accept().await?;
+        if !access.allows(&stream) {
+            continue;
+        }
         tokio::spawn(async move {
             tracing::info!("RDP session connected");
             match session::run(stream).await {
