@@ -1,0 +1,23 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: rdp-usb-gw
+Source: https://github.com/wrouesnel/rdp-usb-gw
+
+Files: *
+Copyright: rdp-usb-gw contributors
+License: Apache-2.0 or MIT
+
+Files: src/vendor/*
+Copyright: Devolutions Inc.
+License: Apache-2.0 or MIT
+
+Files: vendor/*
+Copyright: The authors of each crate; see each crate's Cargo.toml
+License: Various free licenses; see each crate's Cargo.toml and license files
+
+License: Apache-2.0 or MIT
+ Licensed under either of the Apache License, Version 2.0, or the MIT
+ license, at your option.
+ .
+ On Debian systems, the Apache License 2.0 is in
+ /usr/share/common-licenses/Apache-2.0. The MIT license is in LICENSE-MIT in
+ the source.

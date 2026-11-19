@@ -1,0 +1,29 @@
+Source: rdp-usb-gw
+Section: admin
+Priority: optional
+Maintainer: Will Rouesnel <wrouesnel@wrouesnel.com>
+Build-Depends: debhelper-compat (= 13),
+               cargo-1.97,
+               rustc-1.97,
+               pkgconf,
+               systemd-dev | systemd
+Standards-Version: 4.6.2
+Homepage: https://github.com/wrouesnel/rdp-usb-gw
+Vcs-Git: https://github.com/wrouesnel/rdp-usb-gw.git
+Vcs-Browser: https://github.com/wrouesnel/rdp-usb-gw
+Rules-Requires-Root: no
+
+Package: rdp-usb-gw
+Architecture: amd64 arm64
+Depends: kmod, systemd, ${shlibs:Depends}, ${misc:Depends}
+Description: USB redirection for Linux RDP servers
+ rdp-usb-gw implements the server side of RDP USB redirection (MS-RDPEUSB,
+ the URBDRC dynamic channel). Devices an RDP client redirects, such as a
+ security key, appear on the Linux machine as local devices, attached through
+ USB/IP's vhci_hcd.
+ .
+ It doesn't speak RDP. The RDP server lends it the session's URBDRC channels
+ over a unix socket, so the server needs a small proxy for it, such as the
+ one in gnome-remote-desktop from the grd-with-usb-redirect packages.
+ .
+ vhci_hcd is in the linux-modules-extra package on Ubuntu.

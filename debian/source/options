@@ -1,0 +1,2 @@
+# vendor/ comes from the orig tarball; don't diff it.
+extend-diff-ignore = "^vendor/"
